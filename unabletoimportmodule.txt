@@ -1,0 +1,26 @@
+"Unable to import module 'lambda_function': No module named 'awswrangler'" error while running lambda function 
+when you create zip file of venv with that library and actual .py file its extraction should not be be greate than 250mb
+
+
+python -m venv venv
+
+.\venv\Scripts\Activate #activate venv in cmd or power shell
+
+pip install awswrangler install wrangler on that
+
+deactivate from venv
+
+Run the following command to set the execution policy to unrestricted:
+#if error occur   use this command -----   Set-ExecutionPolicy Unrestricted
+
+Compress-Archive -Path .\your_lambda_function.py, .\venv\Lib\site-packages -DestinationPath deployment_package.zip
+e.g Compress-Archive -Path "C:\Users\akshay\Desktop\lambdafunction.py", .\venv\Lib\site-packages -DestinationPath deployment_package.zip
+#pwd should be desktop to access lambda file as its on desktop likewise any folder where lambda function .py file is located
+destination path will be same as pwd and will create folder deployment_package.zip
+
+
+#from local to aws s3 bukcet i.e youtubeanalysisdata
+aws s3 cp deployment_package.zip s3://youtubeanalysisdata/    
+
+from s3 after uploading object loaction of zip file and copy that in new layer in upload section it must not be greater than 250 mb
+in my case it was above 250 i.e lambda will unzip it but that should not exceed 250 mb
